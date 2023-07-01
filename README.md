@@ -1,37 +1,61 @@
 # DepthFirstTraversalforaGraph
-# Python3 program to count number
-# of trees in a forest.
+# Python3 program to print DFS traversal
+# from a given graph
+from collections import defaultdict
 
-# A utility function to add an
-# edge in an undirected graph.
-def addEdge(adj, u, v):
-	adj[u].append(v)
-	adj[v].append(u)
+# This class represents a directed graph using
+# adjacency list representation
 
-# A utility function to do DFS of graph
-# recursively from a given vertex u.
-def DFSUtil(u, adj, visited):
-	visited[u] = True
-	for i in range(len(adj[u])):
-		if (visited[adj[u][i]] == False):
-			DFSUtil(adj[u][i], adj, visited)
 
-# Returns count of tree is the
-# forest given as adjacency list.
-def countTrees(adj, V):
-	visited = [False] * V
-	res = 0
-	for u in range(V):
-		if (visited[u] == False):
-			DFSUtil(u, adj, visited)
-			res += 1
-	return res
+class Graph:
+
+	# Constructor
+	def __init__(self):
+
+		# default dictionary to store graph
+		self.graph = defaultdict(list)
+
+	# function to add an edge to graph
+	def addEdge(self, u, v):
+		self.graph[u].append(v)
+
+	# A function used by DFS
+	def DFSUtil(self, v, visited):
+
+		# Mark the current node as visited
+		# and print it
+		visited.add(v)
+		print(v, end=' ')
+
+		# Recur for all the vertices
+		# adjacent to this vertex
+		for neighbour in self.graph[v]:
+			if neighbour not in visited:
+				self.DFSUtil(neighbour, visited)
+
+	# The function to do DFS traversal. It uses
+	# recursive DFSUtil()
+	def DFS(self, v):
+
+		# Create a set to store visited vertices
+		visited = set()
+
+		# Call the recursive helper function
+		# to print DFS traversal
+		self.DFSUtil(v, visited)
 
 # Driver code
-if __name__ == '__main__':
-	V = 5
-	adj = [[] for i in range(V)]
-	addEdge(adj, 0, 1)
-	addEdge(adj, 0, 2)
-	addEdge(adj, 3, 4)
-	print(countTrees(adj, V))
+
+
+# Create a graph given
+# in the above diagram
+g = Graph()
+g.addEdge(0, 1)
+g.addEdge(0, 2)
+g.addEdge(1, 2)
+g.addEdge(2, 0)
+g.addEdge(2, 3)
+g.addEdge(3, 3)
+
+print("Following is DFS from (starting from vertex 2)")
+g.DFS(2)
